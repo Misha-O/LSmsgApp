@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/normalize.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <title>LS Message App</title>
+  </head>
+  <body>
+    <div class="container">
+      <a href="#" class="close"></a>
+      <div class="img__block">
+        <img
+          src="img/Free_Communication_Logo_Template.png"
+          alt="Communication logo"
+        />
+      </div>
+      <div class="text__block">
+        <h2 class="text__header">Authorization</h2>
+        <div class="text__content">
+          <p>Please type your name and nickname for further authorization</p>
+        </div>
+      </div>
+      <form action="chat.html">
+        <div class="input__block">
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username..."
+            required
+          />
+          <!-- <input type="text" id="nickname" placeholder="Your nickname" /> -->
+          <button href="/chat.html" id="enter">Enter</button>
+          <!-- <a class="enter" href="/chat.html" id="enter">Enter</a> -->
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
