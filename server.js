@@ -3,7 +3,12 @@ const http = require("http");
 const express = require("express");
 const socket = require("socket.io");
 const formatMessage = require("./utils/messages");
-const { userJoin, getCurrentUser, userLeave } = require("./utils/users");
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getChatRoomUsers,
+} = require("./utils/users");
 
 // app setup
 const app = express();
@@ -18,21 +23,26 @@ const io = socket(server);
 
 // run when client connects
 io.on("connection", (socket) => {
-  socket.on("joinChat", ({ username }) => {
-    const user = userJoin(socket.id, username);
+  socket.on("joinChat", ({ username, chatRoom }) => {
+    const user = userJoin(socket.id, username, chatRoom);
+
+    socket.join(user.chatRoom);
 
     //   emits only to current user
     socket.emit("message", formatMessage(botName, "Welcome to LS Chat"));
 
     //   broadcast when client connects
-    socket.broadcast.emit(
-      "message",
-      formatMessage(botName, `${user.username} has joined the chat`)
-    );
+    socket.broadcast
+      .to(user.chatRoom)
+      .emit(
+        "message",
+        formatMessage(botName, `${user.username} has joined the chat`)
+      );
 
-    // send chat users info
-    io.emit("chatUsers", {
-      users: user.username,
+    // send chat users info to sidebar
+    io.to(user.chatRoom).emit("chatUsers", {
+      chatRoom: user.chatRoom,
+      users: getChatRoomUsers(user.chatRoom),
     });
   });
 
@@ -40,7 +50,7 @@ io.on("connection", (socket) => {
   socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
     // emit back to client
-    io.emit("message", formatMessage(user.username, msg));
+    io.to(user.chatRoom).emit("message", formatMessage(user.username, msg));
   });
 
   //   when client disconnects
@@ -49,10 +59,15 @@ io.on("connection", (socket) => {
 
     // if exists
     if (user) {
-      io.emit(
+      io.to(user.chatRoom).emit(
         "message",
         formatMessage(botName, `${user.username} has left the chat`)
       );
+
+      io.to(user.chatRoom).emit("chatUsers", {
+        chatRoom: user.chatRoom,
+        users: getChatRoomUsers(user.chatRoom),
+      });
     }
   });
 });

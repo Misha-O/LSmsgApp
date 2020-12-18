@@ -332,3 +332,10 @@ button:hover {
     display: none;
   }
 }
+
+.form-control {
+  visibility: hidden;
+}
+.form-control select {
+  background-color: var(--bg-color-lighter);
+}
