@@ -123,6 +123,7 @@ a {
   font-weight: 500;
 }
 .text__content {
+  margin-top: 20px;
   width: 95%;
   font-size: 16px;
   color: #7f91a4;
@@ -227,6 +228,21 @@ button:hover {
   padding: 10px 0;
 }
 
+.chat-sidebar div {
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 30%;
+}
+/* for avatar img */
+.avatar {
+  margin-right: 25px;
+  width: 30px;
+  height: 30px;
+  background: url("../img//no-photo.png");
+  background-size: cover;
+  border-radius: 50%;
+}
 .chat-messages {
   color: #fff;
   padding: 30px;

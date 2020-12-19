@@ -1,6 +1,5 @@
 const chatForm = document.getElementById("chat-form");
 const chatMessages = document.querySelector(".chat-messages");
-// const roomName = document.getElementById("room-name");
 const userList = document.getElementById("users");
 
 // get username from URL
@@ -53,6 +52,27 @@ function outputMessage(message) {
 
 function outputChatUsers(users) {
   userList.innerHTML = `
-  ${users.map((user) => `<li>${user.username}</li>`).join("")}
+  ${users
+    .map((user) => `<div class ="avatar"></div><div>${user.username}</div>`)
+    .join("")}
   `;
 }
+
+window.addEventListener("dragover", (e) => {
+  if (e.target.classList.contains("avatar")) {
+    e.preventDefault(); //can drop on this element
+  }
+});
+window.addEventListener("drop", (e) => {
+  if (e.target.classList.contains("avatar")) {
+    e.preventDefault();
+
+    const file = e.dataTransfer.items[0].getAsFile(); //read what we drag as file
+    const reader = new FileReader(); //create fileReader
+
+    reader.readAsDataURL(file); //read it to get data url (img encoded in base64 format)
+    // when reading ends
+    // reader.addEventListener("load", () => window.onUpload(reader.result));
+    e.preventDefault();
+  }
+});
