@@ -1,6 +1,8 @@
 const chatForm = document.getElementById("chat-form");
 const chatMessages = document.querySelector(".chat-messages");
 const userList = document.getElementById("users");
+const userAvatar = document.querySelector(".user--avatar");
+const currentUser = document.querySelector(".current--user");
 
 // get username from URL
 // Qs library to query string from http address, to ignore spec characters add ignoreQueryPrefix
@@ -53,26 +55,58 @@ function outputMessage(message) {
 function outputChatUsers(users) {
   userList.innerHTML = `
   ${users
-    .map((user) => `<div class ="avatar"></div><div>${user.username}</div>`)
+    .map(
+      (user) => `
+      <li class="user--item">
+      <div class="avatar" data-avatar="${user.username}">
+      <img src="${user.image ? user.image : "/img/no-photo.png"}" alt="" />
+      </div>
+      <div class="user--name">${user.username}</div>
+      </li>`
+    )
     .join("")}
   `;
 }
 
-window.addEventListener("dragover", (e) => {
-  if (e.target.classList.contains("avatar")) {
-    e.preventDefault(); //can drop on this element
+socket.on("imgLoad", ({ data }) => {
+  updateAvatar(data.data);
+});
+
+userAvatar.addEventListener("drop", (e) => {
+  const file = e.dataTransfer.items[0].getAsFile();
+  // construct a set of key/value pairs representing form fields and their values
+  const formData = new FormData();
+  // appends value file to a key image
+  formData.append("image", file);
+
+  fetch("/upload", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((image) => {
+      const request = {
+        type: "avatar",
+        data: image,
+      };
+      socket.emit("imgLoad", { request });
+    });
+  e.preventDefault();
+});
+
+userAvatar.addEventListener("dragover", (e) => {
+  // if any elem exist and it is a file(taking first element [0])
+  if (e.dataTransfer.items.length && e.dataTransfer.items[0].kind === "file") {
+    e.preventDefault();
   }
 });
-window.addEventListener("drop", (e) => {
-  if (e.target.classList.contains("avatar")) {
-    e.preventDefault();
 
-    const file = e.dataTransfer.items[0].getAsFile(); //read what we drag as file
-    const reader = new FileReader(); //create fileReader
+function updateAvatar(data) {
+  const avatarsDom = document.querySelectorAll(
+    `.avatar[data-avatar="${user.username}"] img`
+  );
 
-    reader.readAsDataURL(file); //read it to get data url (img encoded in base64 format)
-    // when reading ends
-    // reader.addEventListener("load", () => window.onUpload(reader.result));
-    e.preventDefault();
+  for (const img of avatarsDom) {
+    img.src = data.image;
   }
-});
+}

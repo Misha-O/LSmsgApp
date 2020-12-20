@@ -182,7 +182,8 @@ button:hover {
 /* chat Page */
 
 .chat-container {
-  max-width: 1100px;
+  /* max-width: 1100px; */
+  width: 90%;
   background: var(--bg-color-lighter);
   margin: 30px auto;
   overflow: hidden;
@@ -203,7 +204,7 @@ button:hover {
 .chat-main {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  min-height: 500px;
+  min-height: 550px;
 }
 
 .chat-sidebar {
@@ -224,29 +225,39 @@ button:hover {
   margin-bottom: 15px;
 }
 
-.chat-sidebar ul li {
+/* .chat-sidebar ul li {
   padding: 10px 0;
-}
-
-.chat-sidebar div {
-  padding: 10px 0;
+} */
+.user--item {
   display: flex;
-  flex-wrap: wrap;
-  flex-basis: 30%;
+  align-items: center;
+  align-items: center;
+  margin-bottom: 12px;
 }
 /* for avatar img */
-.avatar {
-  margin-right: 25px;
-  width: 30px;
-  height: 30px;
-  background: url("../img//no-photo.png");
-  background-size: cover;
-  border-radius: 50%;
+.current {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
 }
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
 .chat-messages {
   color: #fff;
   padding: 30px;
-  max-height: 500px;
+  max-height: 550px;
   overflow-y: scroll;
 }
 

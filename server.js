@@ -2,6 +2,7 @@ const path = require("path"); // node core module
 const http = require("http");
 const express = require("express");
 const socket = require("socket.io");
+const multer = require("multer"); //loads files on server side
 const formatMessage = require("./utils/messages");
 const {
   userJoin,
@@ -9,6 +10,20 @@ const {
   userLeave,
   getChatRoomUsers,
 } = require("./utils/users");
+
+// img upload setup
+// all files stored on server as file
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/photos");
+  },
+  // this is to reassign file names
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+// call multer
+const upload = multer({ storage });
 
 // app setup
 const app = express();
@@ -18,7 +33,7 @@ const server = http.createServer(app); //access directly to handle socket.io
 app.use(express.static(path.join(__dirname, "public")));
 const botName = "Service Bot";
 
-// socket setup
+// socket setup(to operate in one port)
 const io = socket(server);
 
 // run when client connects
@@ -44,6 +59,11 @@ io.on("connection", (socket) => {
       chatRoom: user.chatRoom,
       users: getChatRoomUsers(user.chatRoom),
     });
+
+    // socket.broadcast.to(user.chatRoom).emit("imgLoad", (data) => {
+    //   const image = data.data;
+    //   io.to(user.chatRoom).emit("imgLoad");
+    // });
   });
 
   //   listen for chatMessage
@@ -76,4 +96,10 @@ io.on("connection", (socket) => {
 const PORT = 3000 || process.env.PORT;
 server.listen(PORT, () => {
   console.log(`connection established on port: ${PORT}`);
+});
+
+// upload images as avatars
+// route which on POST with url 'upload'. Then multer will load img -> in req with property file we receive all info
+app.post("/upload", upload.single("image"), (req, res) => {
+  res.status(200).send({ image: `/photos/${req.file.filename}` });
 });
