@@ -89,7 +89,8 @@ userAvatar.addEventListener("drop", (e) => {
         type: "avatar",
         data: image,
       };
-      socket.emit("imgLoad", { request });
+      console.log(request);
+      socket.send(JSON.stringify(request));
     });
   e.preventDefault();
 });
@@ -100,13 +101,3 @@ userAvatar.addEventListener("dragover", (e) => {
     e.preventDefault();
   }
 });
-
-function updateAvatar(data) {
-  const avatarsDom = document.querySelectorAll(
-    `.avatar[data-avatar="${user.username}"] img`
-  );
-
-  for (const img of avatarsDom) {
-    img.src = data.image;
-  }
-}
