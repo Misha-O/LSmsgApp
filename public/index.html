@@ -3,43 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/normalize.css" />
-    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="/styles/normalize.css" />
+    <link rel="stylesheet" href="/styles/main.css" />
     <title>LS Message App</title>
   </head>
   <body>
-    <div class="container">
-      <a href="#" class="close"></a>
-      <div class="img__block">
-        <img
-          src="img/Free_Communication_Logo_Template.png"
-          alt="Communication logo"
-        />
-      </div>
-      <div class="text__block">
-        <h2 class="text__header">Authorization</h2>
-        <div class="text__content">
+    <div class="wrapper">
+      <div class="login">
+        <div class="login__avatar"></div>
+        <h2 class="login__title">Authorization</h2>
+        <div class="login__text">
           <p>Please type your name or nickname for further authorization</p>
         </div>
+        <input
+          type="text"
+          class="login__input input"
+          placeholder="Enter username..."
+          required
+        />
+        <button type="button" class="button login__btn">Enter</button>
       </div>
-      <form action="chat.html">
-        <div class="input__block">
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Enter username..."
-            required
-          />
-          <div class="form-control">
-            <label for="chatRoom"></label>
-            <select name="chatRoom" id="room">
-              <option value="mainChat"></option>
-            </select>
+      <div class="chat hidden">
+        <aside class="aside">
+          <h4>You:</h4>
+          <div class="current">
+            <div class="avatar user_avatar">
+              <img src="/img/no-photo.png" alt="" />
+            </div>
+            <div class="user__name current__user"></div>
           </div>
-          <button href="/chat.html" id="enter">Enter</button>
-        </div>
-      </form>
+          <div class="all">Users:</div>
+          <ul class="users"></ul>
+        </aside>
+        <section class="main">
+          <a href="index.html" class="close chat"></a>
+          <div class="messages"></div>
+          <div class="send-form">
+            <input
+              type="text"
+              class="send__input input"
+              placeholder="Type a message..."
+              required
+            />
+            <button type="button" class="button send__btn">Send</button>
+          </div>
+        </section>
+      </div>
     </div>
+    <div class="notification"></div>
+  </div>
+    <script src="/js/main.js"></script>
   </body>
 </html>
