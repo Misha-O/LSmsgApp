@@ -211,6 +211,7 @@ body {
   padding: 20px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  overflow: scroll;
 }
 
 .send-form {
@@ -229,6 +230,7 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .text {

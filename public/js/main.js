@@ -117,6 +117,9 @@ function outputMessage(wsObjReceived) {
   </div>`;
 
   messagesContainer.append(div);
+
+  //   scroll down on msg
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 function showNotification(message) {
